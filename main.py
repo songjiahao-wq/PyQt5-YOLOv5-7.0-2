@@ -12,9 +12,10 @@ import torch.backends.cudnn as cudnn
 import os
 import time
 import cv2
-
+import traceback
 from models.experimental import attempt_load
-from utils.datasets import LoadImages, LoadWebcam
+from utils.dataloaders import LoadImages, LoadWebcam
+from utils.dataloaders import create_dataloader
 from utils.CustomMessageBox import MessageBox
 from utils.general import check_img_size, check_requirements, check_imshow, colorstr, non_max_suppression, \
     apply_classifier, scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
@@ -79,7 +80,7 @@ class DetThread(QThread):
             half &= device.type != 'cpu'  # half precision only supported on CUDA
 
             # Load model
-            model = attempt_load(self.weights, map_location=device)  # load FP32 model
+            model = attempt_load(self.weights,device=device)  # load FP32 model
             num_params = 0
             for param in model.parameters():
                 num_params += param.numel()
@@ -117,7 +118,7 @@ class DetThread(QThread):
                 # change model
                 if self.current_weight != self.weights:
                     # Load model
-                    model = attempt_load(self.weights, map_location=device)  # load FP32 model
+                    model = attempt_load(self.weights, device=device)  # load FP32 model
                     num_params = 0
                     for param in model.parameters():
                         num_params += param.numel()
@@ -146,7 +147,7 @@ class DetThread(QThread):
                     else:
                         percent = self.percent_length
 
-                    statistic_dic = {name: 0 for name in names}
+                    statistic_dic = {names[name]: 0 for name in names}
                     img = torch.from_numpy(img).to(device)
                     img = img.half() if half else img.float()  # uint8 to fp16/32
                     img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -206,7 +207,14 @@ class DetThread(QThread):
                         break
 
         except Exception as e:
-            self.send_msg.emit('%s' % e)
+            print('{:*^60}'.format('直接打印出e, 输出错误具体原因'))
+            print(e)
+            print('{:*^60}'.format('使用repr打印出e, 带有错误类型'))
+            print(repr(e))
+            print('{:*^60}'.format('使用traceback的format_exc可以输出错误具体位置'))
+            exstr = traceback.format_exc()
+            print(exstr)
+
 
 
 
@@ -328,7 +336,13 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             self.statistic_msg('Loading rtsp：{}'.format(ip))
             self.rtsp_window.close()
         except Exception as e:
-            self.statistic_msg('%s' % e)
+            print('{:*^60}'.format('直接打印出e, 输出错误具体原因'))
+            print(e)
+            print('{:*^60}'.format('使用repr打印出e, 带有错误类型'))
+            print(repr(e))
+            print('{:*^60}'.format('使用traceback的format_exc可以输出错误具体位置'))
+            exstr = traceback.format_exc()
+            print(exstr)
 
     def chose_cam(self):
         try:
@@ -369,7 +383,14 @@ class MainWindow(QMainWindow, Ui_mainWindow):
                 self.det_thread.source = action.text()
                 self.statistic_msg('Loading camera：{}'.format(action.text()))
         except Exception as e:
-            self.statistic_msg('%s' % e)
+            print('{:*^60}'.format('直接打印出e, 输出错误具体原因'))
+            print(e)
+            print('{:*^60}'.format('使用repr打印出e, 带有错误类型'))
+            print(repr(e))
+            print('{:*^60}'.format('使用traceback的format_exc可以输出错误具体位置'))
+            exstr = traceback.format_exc()
+            print(exstr)
+
 
     def load_setting(self):
         config_file = 'config/setting.json'
@@ -528,7 +549,13 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             label.setPixmap(QPixmap.fromImage(img))
 
         except Exception as e:
+            print('{:*^60}'.format('直接打印出e, 输出错误具体原因'))
+            print(e)
+            print('{:*^60}'.format('使用repr打印出e, 带有错误类型'))
             print(repr(e))
+            print('{:*^60}'.format('使用traceback的format_exc可以输出错误具体位置'))
+            exstr = traceback.format_exc()
+            print(exstr)
 
     def show_statistic(self, statistic_dic):
         try:
@@ -539,7 +566,13 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             self.resultWidget.addItems(results)
 
         except Exception as e:
+            print('{:*^60}'.format('直接打印出e, 输出错误具体原因'))
+            print(e)
+            print('{:*^60}'.format('使用repr打印出e, 带有错误类型'))
             print(repr(e))
+            print('{:*^60}'.format('使用traceback的format_exc可以输出错误具体位置'))
+            exstr = traceback.format_exc()
+            print(exstr)
 
     def closeEvent(self, event):
         self.det_thread.jump_out = True

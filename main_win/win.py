@@ -17,7 +17,7 @@ class Ui_mainWindow(object):
         mainWindow.resize(1394, 762)
         mainWindow.setMouseTracking(True)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/img/icon/图片1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/img/icon/conan.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         mainWindow.setWindowIcon(icon)
         mainWindow.setStyleSheet("#mainWindow{border:none;}")
         self.centralwidget = QtWidgets.QWidget(mainWindow)
