@@ -13,6 +13,9 @@ Download the zip file and unzip it to the destination, find and run main.exe
 ![location](./imgs/exe_location.JPG)
 
 ### Updated Date：2023/2/1
+### NEU模型链接：
+https://pan.baidu.com/s/12Z_Ofz2fUb58M-JXfSLYwQ 
+提取码：6vii
 ![img.png](img.png)
 ![img_1.png](img_1.png)
 ![img_2.png](img_2.png)
